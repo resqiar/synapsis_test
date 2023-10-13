@@ -20,9 +20,11 @@ func main() {
 
 	// Init handlers
 	APIHandler := handlers.APIHandlerImpl{}
+	AuthHandler := handlers.AuthHandlerImpl{}
 
 	// Init routes
 	routes.InitAPIRoutes(server, &APIHandler)
+	routes.InitAuthRoutes(server, &AuthHandler)
 
 	if err := server.Listen(":5000"); err != nil {
 		log.Fatal(err)
