@@ -17,13 +17,13 @@ type ProductServiceImpl struct {
 }
 
 func (service *ProductServiceImpl) CreateProduct(payload *inputs.CreateProductInput) error {
-	user := entities.Product{
+	product := entities.Product{
 		Title:       payload.Title,
 		Description: payload.Description,
 		ImageURL:    payload.ImageURL,
 	}
 
-	if err := service.DB.Create(&user).Error; err != nil {
+	if err := service.DB.Create(&product).Error; err != nil {
 		log.Println("Error Creating Product:", err)
 		return err
 	}
