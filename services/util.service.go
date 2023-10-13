@@ -1,6 +1,9 @@
 package services
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+	"golang.org/x/crypto/bcrypt"
+)
 
 var (
 	// class validator initialization
@@ -10,6 +13,7 @@ var (
 
 type UtilService interface {
 	ValidateInput(payload interface{}) string
+	HashPassword(password string) (string, error)
 }
 
 type UtilServiceImpl struct{}
@@ -54,4 +58,12 @@ func (service *UtilServiceImpl) ValidateInput(payload any) string {
 	}
 
 	return errMessage
+}
+
+func (service *UtilServiceImpl) HashPassword(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return "", err
+	}
+	return string(hashed), nil
 }

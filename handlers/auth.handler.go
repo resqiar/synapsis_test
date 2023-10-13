@@ -12,6 +12,7 @@ type AuthHandler interface {
 }
 
 type AuthHandlerImpl struct {
+	AuthService services.AuthService
 	UtilService services.UtilService
 }
 
@@ -32,5 +33,9 @@ func (handler *AuthHandlerImpl) SendRegister(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.SendString("Hello from auth")
+	if err := handler.AuthService.Register(&payload); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return c.SendStatus(fiber.StatusOK)
 }

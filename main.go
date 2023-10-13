@@ -14,18 +14,23 @@ func main() {
 	server := fiber.New()
 
 	// Init DB
-	_, err := db.InitDatabase()
+	db, err := db.InitDatabase()
 	if err != nil {
 		log.Fatal("DATABASE FAILED: ", err)
 	}
 
 	// Init services
 	utilService := services.UtilServiceImpl{}
+	authService := services.AuthServiceImpl{
+		DB:          db,
+		UtilService: &utilService,
+	}
 
 	// Init handlers
 	APIHandler := handlers.APIHandlerImpl{}
 	authHandler := handlers.AuthHandlerImpl{
 		UtilService: &utilService,
+		AuthService: &authService,
 	}
 
 	// Init routes
