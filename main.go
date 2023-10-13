@@ -27,14 +27,14 @@ func main() {
 	}
 
 	// Init handlers
-	APIHandler := handlers.APIHandlerImpl{}
+	productHandler := handlers.ProductHandlerImpl{}
 	authHandler := handlers.AuthHandlerImpl{
 		UtilService: &utilService,
 		AuthService: &authService,
 	}
 
 	// Init routes
-	routes.InitAPIRoutes(server, &APIHandler)
+	routes.InitProductRoutes(server, &productHandler)
 	routes.InitAuthRoutes(server, &authHandler)
 
 	if err := server.Listen(":5000"); err != nil {
