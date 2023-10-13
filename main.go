@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"synapsis_test/db"
 	"synapsis_test/handlers"
+	"synapsis_test/routes"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,7 +12,17 @@ import (
 func main() {
 	server := fiber.New()
 
-	server.Get("/", handlers.SendHelloWorld)
+	// Init DB
+	_, err := db.InitDatabase()
+	if err != nil {
+		log.Fatal("DATABASE FAILED: ", err)
+	}
+
+	// Init handlers
+	APIHandler := handlers.APIHandlerImpl{}
+
+	// Init routes
+	routes.InitAPIRoutes(server, &APIHandler)
 
 	if err := server.Listen(":5000"); err != nil {
 		log.Fatal(err)

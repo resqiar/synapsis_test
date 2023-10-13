@@ -2,6 +2,12 @@ package handlers
 
 import "github.com/gofiber/fiber/v2"
 
-func SendHelloWorld(c *fiber.Ctx) error {
+type APIHandler interface {
+	SendHelloWorld(c *fiber.Ctx) error
+}
+
+type APIHandlerImpl struct{}
+
+func (handler *APIHandlerImpl) SendHelloWorld(c *fiber.Ctx) error {
 	return c.SendString("Hello World")
 }
