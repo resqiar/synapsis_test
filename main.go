@@ -38,11 +38,18 @@ func initModules(db *gorm.DB, server *fiber.App) {
 	productService := services.ProductServiceImpl{
 		DB: db,
 	}
+	categoryService := services.CategoryServiceImpl{
+		DB: db,
+	}
 
 	// handlers
 	productHandler := handlers.ProductHandlerImpl{
 		UtilService:    &utilService,
 		ProductService: &productService,
+	}
+	categoryHandler := handlers.CategoryHandlerImpl{
+		UtilService:     &utilService,
+		CategoryService: &categoryService,
 	}
 	authHandler := handlers.AuthHandlerImpl{
 		UtilService: &utilService,
@@ -51,5 +58,6 @@ func initModules(db *gorm.DB, server *fiber.App) {
 
 	// routes
 	routes.InitProductRoutes(server, &productHandler)
+	routes.InitCategoryRoutes(server, &categoryHandler)
 	routes.InitAuthRoutes(server, &authHandler)
 }
