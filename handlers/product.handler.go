@@ -1,13 +1,36 @@
 package handlers
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"synapsis_test/inputs"
+	"synapsis_test/services"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 type ProductHandler interface {
-	SendHelloWorld(c *fiber.Ctx) error
+	CreateProduct(c *fiber.Ctx) error
 }
 
-type ProductHandlerImpl struct{}
+type ProductHandlerImpl struct {
+	UtilService    services.UtilService
+	ProductService services.ProductService
+}
 
-func (handler *ProductHandlerImpl) SendHelloWorld(c *fiber.Ctx) error {
-	return c.SendString("Hello World")
+func (handler *ProductHandlerImpl) CreateProduct(c *fiber.Ctx) error {
+	var payload inputs.CreateProductInput
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	// validate the payload using class-validator package
+	if err := handler.UtilService.ValidateInput(payload); err != "" {
+		return c.Status(fiber.StatusInternalServerError).SendString(err)
+	}
+
+	if err := handler.ProductService.CreateProduct(&payload); err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return c.SendStatus(fiber.StatusOK)
 }

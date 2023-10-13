@@ -25,9 +25,15 @@ func main() {
 		DB:          db,
 		UtilService: &utilService,
 	}
+	productService := services.ProductServiceImpl{
+		DB: db,
+	}
 
 	// Init handlers
-	productHandler := handlers.ProductHandlerImpl{}
+	productHandler := handlers.ProductHandlerImpl{
+		UtilService:    &utilService,
+		ProductService: &productService,
+	}
 	authHandler := handlers.AuthHandlerImpl{
 		UtilService: &utilService,
 		AuthService: &authService,
