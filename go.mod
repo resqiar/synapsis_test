@@ -6,6 +6,7 @@ require (
 	github.com/glebarez/sqlite v1.9.0
 	github.com/go-playground/validator/v10 v10.15.5
 	github.com/gofiber/fiber/v2 v2.49.2
+	golang.org/x/crypto v0.7.0
 	gorm.io/gorm v1.25.5
 )
 
@@ -29,7 +30,6 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.49.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
