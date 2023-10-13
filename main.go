@@ -8,6 +8,7 @@ import (
 	"synapsis_test/services"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -19,7 +20,16 @@ func main() {
 		log.Fatal("DATABASE FAILED: ", err)
 	}
 
-	// Init services
+	// Init all modules (services, handlers, routes)
+	initModules(db, server)
+
+	if err := server.Listen(":5000"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func initModules(db *gorm.DB, server *fiber.App) {
+	// services
 	utilService := services.UtilServiceImpl{}
 	authService := services.AuthServiceImpl{
 		DB:          db,
@@ -29,7 +39,7 @@ func main() {
 		DB: db,
 	}
 
-	// Init handlers
+	// handlers
 	productHandler := handlers.ProductHandlerImpl{
 		UtilService:    &utilService,
 		ProductService: &productService,
@@ -39,11 +49,7 @@ func main() {
 		AuthService: &authService,
 	}
 
-	// Init routes
+	// routes
 	routes.InitProductRoutes(server, &productHandler)
 	routes.InitAuthRoutes(server, &authHandler)
-
-	if err := server.Listen(":5000"); err != nil {
-		log.Fatal(err)
-	}
 }
