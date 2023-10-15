@@ -17,6 +17,11 @@
 git clone https://github.com/resqiar/synapsis_test.git
 ```
 
+- Install packages
+```bash
+go mod tidy
+```
+
 - Run the Server
 ```bash
 go run main.go
